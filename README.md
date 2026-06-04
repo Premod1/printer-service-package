@@ -2,6 +2,9 @@
 
 A lightweight Vue 3 composable (`useLocalPrinterService`) designed to interface with a local desktop printing service to fetch system printers and send HTML content directly to a thermal or document printer.
 
+> [!IMPORTANT]
+> To use this package, you must download and run the **PrintBridge** desktop application from [https://premod.me/printbridge](https://premod.me/printbridge).
+
 ---
 
 ## Features
