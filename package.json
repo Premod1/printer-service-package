@@ -1,6 +1,6 @@
 {
   "name": "printer-service-package",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Vue local printer service helper to list and print to local printers and sync to Laravel database",
   "main": "src/index.js",
   "type": "module",
@@ -11,10 +11,17 @@
     "test": "vitest run"
   },
   "keywords": [
-    "vue",
-    "print",
+    "printer",
     "printer-service",
-    "laravel-sync",
+    "pos",
+    "pos-printing",
+    "receipt-printer",
+    "thermal-printer",
+    "esc-pos",
+    "print-job",
+    "waybill-printer",
+    "node-print",
+    "vue",
     "composable"
   ],
   "author": "",
