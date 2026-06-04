@@ -58,32 +58,6 @@ export function useLocalPrinterService(options = {}) {
     }
 
     /**
-     * Sync the printers list fetched from the local client to the backend Laravel database.
-     */
-    const syncPrintersToDatabase = async () => {
-        try {
-            // Ensure we have fetched printers first
-            if (printers.value.length === 0) {
-                await getPrinters()
-            }
-            if (printers.value.length === 0) {
-                throw new Error('No printers found on local client to sync.')
-            }
-
-            // Sync using the global/app-level axios instance (so Laravel config/headers are applied)
-            const response = await axios.post('/admin/settings/printers/local-sync', {
-                printers: printers.value
-            })
-
-            return response.data
-        } catch (error) {
-            console.error('Failed to sync printers to database:', error)
-            lastError.value = 'Sync to database failed: ' + (error.response?.data?.message || error.message)
-            throw error
-        }
-    }
-
-    /**
      * Print HTML content directly to the local desktop client.
      *
      * @param {string} printerName
@@ -119,7 +93,6 @@ export function useLocalPrinterService(options = {}) {
         lastError,
         checkConnection,
         getPrinters,
-        syncPrintersToDatabase,
         printHTML
     }
 }

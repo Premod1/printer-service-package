@@ -61,40 +61,6 @@ describe('useLocalPrinterService', () => {
     expect(service.lastError.value).toContain('Local printing service at http://localhost:8080 is unreachable')
   })
 
-  it('should sync printers to database successfully', async () => {
-    const service = useLocalPrinterService()
-
-    // 1. Mock connection check printers
-    axios.get.mockResolvedValueOnce({
-      data: {
-        success: true,
-        printers: [{ name: 'Printer 1' }]
-      }
-    })
-
-    // 2. Mock database sync post call (this uses the global/default axios instance)
-    axios.post.mockResolvedValueOnce({
-      data: { success: true, message: 'Synced' }
-    })
-
-    const result = await service.syncPrintersToDatabase()
-    
-    expect(result.success).toBe(true)
-    expect(axios.post).toHaveBeenCalledWith('/admin/settings/printers/local-sync', {
-      printers: [{ name: 'Printer 1' }]
-    })
-  })
-
-  it('should fail database sync if no printers found', async () => {
-    const service = useLocalPrinterService()
-
-    axios.get.mockResolvedValueOnce({
-      data: { success: true, printers: [] }
-    })
-
-    await expect(service.syncPrintersToDatabase()).rejects.toThrow('No printers found on local client to sync.')
-  })
-
   it('should print HTML successfully', async () => {
     const service = useLocalPrinterService()
 
