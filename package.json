@@ -1,6 +1,6 @@
 {
   "name": "printer-service-package",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Vue local printer service helper to list and print to local printers and sync to Laravel database",
   "main": "src/index.js",
   "type": "module",

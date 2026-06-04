@@ -28,7 +28,7 @@ npm install printer-service-package
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 Here is a simple example showing how to fetch available printers, select one, and print an HTML document from a Vue 3 component (using `<script setup>`):
 
