@@ -1,27 +1,22 @@
-name: Publish Package to NPM
-
+name: Publish Package to npmjs
 on:
   release:
     types: [created]
   workflow_dispatch:
-
-permissions:
-  contents: read
-  id-token: write
-
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
-
       - run: npm ci
-
-      - run: npm publish --access public
+      - run: npm test
+      - name: Upgrade npm CLI for staged publishing support
+        run: npm install -g npm@latest
+      - name: Publish or Stage to NPM
+        run: npm publish || npm stage publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
