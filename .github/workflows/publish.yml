@@ -2,21 +2,26 @@ name: Publish Package to NPM
 
 on:
   release:
-    types: [created] # Runs automatically when you create a new Release on GitHub
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-          
+
       - run: npm ci
-      
-      - run: npm publish
+
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
