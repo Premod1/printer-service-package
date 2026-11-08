@@ -92,7 +92,11 @@ const handlePrint = async () => {
   if (!selectedPrinter.value) return
   try {
     const htmlReceipt = '<h1>Invoice #1024</h1><p>Thank you for your purchase!</p>'
-    await printHTML(selectedPrinter.value, htmlReceipt, '80mm')
+    // Backward-compatible: cutPaper and openDrawer are optional
+    await printHTML(selectedPrinter.value, htmlReceipt, '80mm', {
+      cutPaper: true,
+      openDrawer: true
+    })
     alert('Print job successfully queued!')
   } catch (error) {
     alert('Print failed: ' + error.message)
@@ -129,7 +133,8 @@ Hook to control the local printing service. Accepts an optional configuration ob
 #### Methods
 * **`checkConnection()`**: Verifies if the desktop client is running. Returns `Promise<boolean>`.
 * **`getPrinters()`**: Updates and returns the list of available system printers. Returns `Promise<array>`.
-* **`printHTML(printerName, htmlContent, width)`**: Sends an HTML payload with the specified width (default: `'80mm'`) to the local print queue. Returns `Promise<any>`.
+* **`printHTML(printerName, htmlContent, width = '80mm', options = {})`**: Sends an HTML payload with the specified width (default: `'80mm'`) and optional `{ cutPaper: true, openDrawer: true, jobId }` flags to the local print queue. Fully backward-compatible if `options` is omitted. Returns `Promise<any>`.
+* **`openCashDrawer(printerName = 'Default', pin = 0)`**: Triggers a standalone RJ11 Cash Drawer Kick pulse without printing a receipt (PrintBridge v3.11.0+). Returns `Promise<any>`.
 
 ---
 

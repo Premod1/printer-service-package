@@ -61,7 +61,7 @@ describe('useLocalPrinterService', () => {
     expect(service.lastError.value).toContain('Local printing service at http://localhost:8080 is unreachable')
   })
 
-  it('should print HTML successfully', async () => {
+  it('should print HTML successfully (backward-compatible without cutPaper/openDrawer)', async () => {
     const service = useLocalPrinterService()
 
     axios.post.mockResolvedValueOnce({
@@ -76,6 +76,47 @@ describe('useLocalPrinterService', () => {
       printerName: 'Printer 1',
       width: '80mm',
       waitUntil: 'networkidle0'
+    })
+  })
+
+  it('should print HTML with optional cutPaper and openDrawer flags', async () => {
+    const service = useLocalPrinterService()
+
+    axios.post.mockResolvedValueOnce({
+      data: { success: true, jobId: 'job_123' }
+    })
+
+    const result = await service.printHTML('Printer 1', '<h1>Receipt</h1>', '80mm', {
+      cutPaper: true,
+      openDrawer: true,
+      jobId: 'job_123'
+    })
+
+    expect(result.success).toBe(true)
+    expect(axios.post).toHaveBeenCalledWith('/print', {
+      html: '<h1>Receipt</h1>',
+      printerName: 'Printer 1',
+      width: '80mm',
+      waitUntil: 'networkidle0',
+      cutPaper: true,
+      openDrawer: true,
+      jobId: 'job_123'
+    })
+  })
+
+  it('should open cash drawer standalone via openCashDrawer', async () => {
+    const service = useLocalPrinterService()
+
+    axios.post.mockResolvedValueOnce({
+      data: { success: true }
+    })
+
+    const result = await service.openCashDrawer('Printer 1', 0)
+
+    expect(result.success).toBe(true)
+    expect(axios.post).toHaveBeenCalledWith('/drawer', {
+      printerName: 'Printer 1',
+      pin: 0
     })
   })
 })
